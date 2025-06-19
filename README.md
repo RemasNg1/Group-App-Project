@@ -7,7 +7,7 @@ This assignment challenges your team to collaborate on designing and developing 
 
 ## 🎯 Core Functionality
 
-- **Log in**
+- **Log in 22222**
 - **Sign Up**
 - **CRUD Operations:**
   - **Create** – Add new items to your app.
