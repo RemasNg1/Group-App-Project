@@ -1,7 +1,7 @@
 # 📱 Group App Development Project
 
-Wwwwwwelcome to the Group App Development Project!  
-Thissssss assignment challenges your team to collaborate on designing and developing a fully functional app that incorporates core features and essential concepts. You will apply what you've learned in class to create an application that includes the following functionalities:
+welcome to the Group App Development Project!  
+This assignment challenges your team to collaborate on designing and developing a fully functional app that incorporates core features and essential concepts. You will apply what you've learned in class to create an application that includes the following functionalities:
 
 ---
 
