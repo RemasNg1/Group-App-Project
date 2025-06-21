@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:geonotes/screens/home/home_screen.dart';
+import 'package:geonotes/screens/bottom_navbar/bottom_navbar_screen.dart';
+
 import 'package:geonotes/screens/login/login_screen.dart';
 import 'package:geonotes/style/app_colors.dart';
 import 'package:geonotes/style/app_spacing.dart';
@@ -168,7 +169,7 @@ class SignupScreen extends StatelessWidget {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const homeScreen(),
+                              builder: (context) => const BottomNavbarScreen(),
                             ),
                           );
                         } else {
