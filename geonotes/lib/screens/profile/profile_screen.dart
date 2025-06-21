@@ -4,10 +4,11 @@ import 'package:geonotes/screens/profile/bloc/profile_bloc.dart';
 import 'package:geonotes/style/app_colors.dart';
 import 'package:geonotes/style/app_spacing.dart';
 import 'package:geonotes/utils/extensions/screen/screen_size.dart';
+import 'package:geonotes/widgets/avatar.dart';
+import 'package:geonotes/widgets/custom_list_tile.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -23,17 +24,9 @@ class ProfileScreen extends StatelessWidget {
                   padding: EdgeInsetsGeometry.all(24),
                   child: Column(
                     children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: Image.asset(
-                          'assets/images/avatar.png',
-                          width: context.getWidth(factor: 0.3),
-                          height: context.getHeight(factor: 0.13),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      AppSpacing.h16,
+                      Avatar(imagePath: 'assets/images/avatar.png'),
 
+                      AppSpacing.h16,
                       Text(
                         "Sara Ahmed",
                         style: TextStyle(
@@ -53,44 +46,26 @@ class ProfileScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      ListTile(
-                        leading: Icon(
-                          Icons.edit_note_sharp,
+                      CustomListTile(
+                        leadingIcon: Icons.edit_note_sharp,
+                        title: "Edit personal information",
+                        trailing: Icon(
+                          Icons.keyboard_arrow_right_outlined,
                           color: Colors.black,
                         ),
-                        title: Text(
-                          "Edit personal information",
-                          style: TextStyle(color: Colors.black),
-                        ),
-                        trailing: InkWell(
-                          onTap: () {
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return CustomDialog3();
-                              },
-                            );
-                          },
-                          child: Icon(
-                            Icons.keyboard_arrow_right_outlined,
-                            color: Colors.black,
-                          ),
-                        ),
-
-                        contentPadding: EdgeInsets.all(0),
+                        onTrailingTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) => CustomDialog3(),
+                          );
+                        },
                       ),
-
-                      ListTile(
-                        leading: Icon(
-                          Icons.notifications_none,
-                          color: Colors.black,
-                        ),
-                        title: Text(
-                          "Notification",
-                          style: TextStyle(color: Colors.black),
-                        ),
+                      CustomListTile(
+                        leadingIcon: Icons.notifications_none,
+                        title: "Notification",
                         trailing: BlocBuilder<ProfileBloc, ProfileState>(
                           builder: (context, state) {
+                            final bloc = context.read<ProfileBloc>();
                             return InkWell(
                               onTap: () {
                                 bloc.add(ChangeNotificationEvent());
@@ -121,12 +96,11 @@ class ProfileScreen extends StatelessWidget {
                             );
                           },
                         ),
-                        contentPadding: EdgeInsets.all(0),
                       ),
                       Align(
                         alignment: Alignment.topLeft,
                         child: Text(
-                          "System",
+                          "More",
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
@@ -134,52 +108,33 @@ class ProfileScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      ListTile(
-                        leading: Icon(
-                          Icons.support_agent_outlined,
+                      CustomListTile(
+                        leadingIcon: Icons.support_agent_outlined,
+                        title: "Support",
+                        trailing: Icon(
+                          Icons.keyboard_arrow_right_outlined,
                           color: Colors.black,
                         ),
-                        title: Text(
-                          "Support",
-                          style: TextStyle(color: Colors.black),
-                        ),
-                        trailing: InkWell(
-                          onTap: () {
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return CustomDialog2();
-                              },
-                            );
-                          },
-                          child: Icon(
-                            Icons.keyboard_arrow_right_outlined,
-                            color: Colors.black,
-                          ),
-                        ),
-                        contentPadding: EdgeInsets.all(0),
+                        onTrailingTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) => CustomDialog2(),
+                          );
+                        },
                       ),
-                      ListTile(
-                        leading: Icon(Icons.logout_sharp, color: Colors.black),
-                        title: Text(
-                          "Logout",
-                          style: TextStyle(color: Colors.black),
+                      CustomListTile(
+                        leadingIcon: Icons.logout_sharp,
+                        title: "Logout",
+                        trailing: Icon(
+                          Icons.keyboard_arrow_right_outlined,
+                          color: Colors.black,
                         ),
-                        trailing: InkWell(
-                          onTap: () {
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return CustomDialog();
-                              },
-                            );
-                          },
-                          child: Icon(
-                            Icons.keyboard_arrow_right_outlined,
-                            color: Colors.black,
-                          ),
-                        ),
-                        contentPadding: EdgeInsets.all(0),
+                        onTrailingTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (_) => CustomDialog(),
+                          );
+                        },
                       ),
                     ],
                   ),
@@ -225,7 +180,7 @@ class CustomDialog extends StatelessWidget {
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.red,
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
