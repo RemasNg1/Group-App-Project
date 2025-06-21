@@ -1,159 +1,193 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geonotes/screens/profile/bloc/profile_bloc.dart';
 import 'package:geonotes/style/app_colors.dart';
 import 'package:geonotes/style/app_spacing.dart';
 import 'package:geonotes/utils/extensions/screen/screen_size.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
-  // test
-  // test
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("Profile"), centerTitle: true),
-      body: SafeArea(
-        child: Center(
-          child: Padding(
-            padding: EdgeInsetsGeometry.all(24),
-            child: Column(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: Image.asset(
-                    'assets/images/avatar.png',
-                    width: context.getWidth(factor: 0.3),
-                    height: context.getHeight(factor: 0.13),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                AppSpacing.h16,
-
-                Text(
-                  "Sara Ahmed",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                ),
-                AppSpacing.h32,
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "System",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.orange,
-                    ),
-                  ),
-                ),
-                ListTile(
-                  leading: Icon(Icons.edit_note_sharp, color: Colors.black),
-                  title: Text(
-                    "Edit personal information",
-                    style: TextStyle(color: Colors.black),
-                  ),
-                  trailing: InkWell(
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return CustomDialog3();
-                        },
-                      );
-                    },
-                    child: Icon(
-                      Icons.keyboard_arrow_right_outlined,
-                      color: Colors.black,
-                    ),
-                  ),
-
-                  contentPadding: EdgeInsets.all(0),
-                ),
-
-                ListTile(
-                  leading: Icon(Icons.notifications_none, color: Colors.black),
-                  title: Text(
-                    "Notification",
-                    style: TextStyle(color: Colors.black),
-                  ),
-                  trailing: AnimatedContainer(
-                    duration: Duration(milliseconds: 200),
-                    width: 60,
-                    height: 28,
-                    padding: EdgeInsets.symmetric(horizontal: 4),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: true ? Colors.orange : Colors.grey.shade400,
-                    ),
-                    alignment: true
-                        ? Alignment.centerRight
-                        : Alignment.centerLeft,
-                    child: Container(
-                      width: 20,
-                      height: 20,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white,
+    return BlocProvider(
+      create: (context) => ProfileBloc(),
+      child: Builder(
+        builder: (context) {
+          final bloc = context.read<ProfileBloc>();
+          return Scaffold(
+            appBar: AppBar(title: Text("Profile"), centerTitle: true),
+            body: SafeArea(
+              child: Center(
+                child: Padding(
+                  padding: EdgeInsetsGeometry.all(24),
+                  child: Column(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Image.asset(
+                          'assets/images/avatar.png',
+                          width: context.getWidth(factor: 0.3),
+                          height: context.getHeight(factor: 0.13),
+                          fit: BoxFit.cover,
+                        ),
                       ),
-                    ),
+                      AppSpacing.h16,
+
+                      Text(
+                        "Sara Ahmed",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      AppSpacing.h32,
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: Text(
+                          "System",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.orange,
+                          ),
+                        ),
+                      ),
+                      ListTile(
+                        leading: Icon(
+                          Icons.edit_note_sharp,
+                          color: Colors.black,
+                        ),
+                        title: Text(
+                          "Edit personal information",
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        trailing: InkWell(
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return CustomDialog3();
+                              },
+                            );
+                          },
+                          child: Icon(
+                            Icons.keyboard_arrow_right_outlined,
+                            color: Colors.black,
+                          ),
+                        ),
+
+                        contentPadding: EdgeInsets.all(0),
+                      ),
+
+                      ListTile(
+                        leading: Icon(
+                          Icons.notifications_none,
+                          color: Colors.black,
+                        ),
+                        title: Text(
+                          "Notification",
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        trailing: BlocBuilder<ProfileBloc, ProfileState>(
+                          builder: (context, state) {
+                            return InkWell(
+                              onTap: () {
+                                bloc.add(ChangeNotificationEvent());
+                              },
+                              child: AnimatedContainer(
+                                duration: Duration(milliseconds: 200),
+                                width: 60,
+                                height: 28,
+                                padding: EdgeInsets.symmetric(horizontal: 4),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: bloc.isEnable
+                                      ? Colors.orange
+                                      : Colors.grey.shade400,
+                                ),
+                                alignment: bloc.isEnable
+                                    ? Alignment.centerRight
+                                    : Alignment.centerLeft,
+                                child: Container(
+                                  width: 20,
+                                  height: 20,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                        contentPadding: EdgeInsets.all(0),
+                      ),
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: Text(
+                          "System",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.orange,
+                          ),
+                        ),
+                      ),
+                      ListTile(
+                        leading: Icon(
+                          Icons.support_agent_outlined,
+                          color: Colors.black,
+                        ),
+                        title: Text(
+                          "Support",
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        trailing: InkWell(
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return CustomDialog2();
+                              },
+                            );
+                          },
+                          child: Icon(
+                            Icons.keyboard_arrow_right_outlined,
+                            color: Colors.black,
+                          ),
+                        ),
+                        contentPadding: EdgeInsets.all(0),
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.logout_sharp, color: Colors.black),
+                        title: Text(
+                          "Logout",
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        trailing: InkWell(
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return CustomDialog();
+                              },
+                            );
+                          },
+                          child: Icon(
+                            Icons.keyboard_arrow_right_outlined,
+                            color: Colors.black,
+                          ),
+                        ),
+                        contentPadding: EdgeInsets.all(0),
+                      ),
+                    ],
                   ),
-                  contentPadding: EdgeInsets.all(0),
                 ),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "System",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.orange,
-                    ),
-                  ),
-                ),
-                ListTile(
-                  leading: Icon(
-                    Icons.support_agent_outlined,
-                    color: Colors.black,
-                  ),
-                  title: Text("Support", style: TextStyle(color: Colors.black)),
-                  trailing: InkWell(
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return CustomDialog2();
-                        },
-                      );
-                    },
-                    child: Icon(
-                      Icons.keyboard_arrow_right_outlined,
-                      color: Colors.black,
-                    ),
-                  ),
-                  contentPadding: EdgeInsets.all(0),
-                ),
-                ListTile(
-                  leading: Icon(Icons.logout_sharp, color: Colors.black),
-                  title: Text("Logout", style: TextStyle(color: Colors.black)),
-                  trailing: InkWell(
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return CustomDialog();
-                        },
-                      );
-                    },
-                    child: Icon(
-                      Icons.keyboard_arrow_right_outlined,
-                      color: Colors.black,
-                    ),
-                  ),
-                  contentPadding: EdgeInsets.all(0),
-                ),
-              ],
+              ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }

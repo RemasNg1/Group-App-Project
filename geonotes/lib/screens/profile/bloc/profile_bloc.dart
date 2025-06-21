@@ -5,9 +5,12 @@ part 'profile_event.dart';
 part 'profile_state.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
+  bool isEnable = true;
+
   ProfileBloc() : super(ProfileInitial()) {
-    on<ProfileEvent>((event, emit) {
-      // TODO: implement event handler
+    on<ChangeNotificationEvent>((event, emit) {
+      isEnable = !isEnable;
+      emit(SuccessState());
     });
   }
 }
