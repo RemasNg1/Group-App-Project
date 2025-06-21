@@ -43,8 +43,8 @@ class BottomNavbarScreen extends StatelessWidget {
                         indicatorColor: Colors.transparent,
                         destinations: [
                           NavigationDestination(
-                            label: "List",
-                            icon: Icon(Icons.list),
+                            label: "Notes",
+                            icon: Icon(Icons.notes_rounded),
                           ),
                           NavigationDestination(
                             label: "Map",
