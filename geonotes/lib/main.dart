@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geonotes/screens/bottom_navbar/bottom_navbar_screen.dart';
+import 'package:geonotes/screens/splash/splash_screen.dart';
 import 'package:geonotes/style/app_theme.dart';
 
 void main() {
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: lightTheme,
       debugShowCheckedModeBanner: false,
-      home: BottomNavbarScreen(),
+      home: SplashScreen(),
     );
   }
 }

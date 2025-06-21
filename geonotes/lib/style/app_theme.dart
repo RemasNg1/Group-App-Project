@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:geonotes/style/app_colors.dart';
 
 final ThemeData lightTheme = ThemeData(
   // scaffoldBackgroundColor: AppColors.basckground,
