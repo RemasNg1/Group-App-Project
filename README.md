@@ -10,6 +10,7 @@ Once you add a note, you'll receive a confirmation notification letting you know
 
 
 [🎥 Watch Project Preview on Google Drive Part 1](https://drive.google.com/file/d/1PDzL57kFcSi3feW45kJ-Op0Z_5QliW4K/view?usp=sharing)
+
 [🎥 Watch Project Preview on Google Drive Part 2](https://drive.google.com/file/d/1GdGJ5ZLQ6KpUVVyKdu0CUIyYuC3Lipfs/view?usp=sharing)
 
 
