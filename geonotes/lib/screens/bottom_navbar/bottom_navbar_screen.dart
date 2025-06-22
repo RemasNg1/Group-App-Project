@@ -39,6 +39,7 @@ class BottomNavbarScreen extends StatelessWidget {
                         selectedIndex: bloc.selectIndex,
                         onDestinationSelected: (value) {
                           bloc.add(NavSelectionEvent(index: value));
+                          
                         },
                         indicatorColor: Colors.transparent,
                         destinations: [
