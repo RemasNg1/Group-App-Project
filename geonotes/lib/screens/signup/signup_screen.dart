@@ -3,12 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geonotes/screens/bottom_navbar/bottom_navbar_screen.dart';
 
 import 'package:geonotes/screens/login/login_screen.dart';
+import 'package:geonotes/screens/signup/bloc/signup_bloc.dart';
 import 'package:geonotes/style/app_colors.dart';
 import 'package:geonotes/style/app_spacing.dart';
 import 'package:geonotes/widgets/custom_button.dart';
 import 'package:geonotes/widgets/custom_text_field.dart';
-import 'bloc/signup_bloc.dart';
-import 'bloc/signup_state.dart';
 
 class SignupScreen extends StatelessWidget {
   const SignupScreen({super.key});
@@ -41,146 +40,135 @@ class SignupScreen extends StatelessWidget {
                       style: TextStyle(fontSize: 16),
                     ),
                     AppSpacing.h24,
-
-                    // Username
-                    CustomTextField(
-                      hintText: "Display Name",
-                      icon: Icons.person_outline,
-                      onChanged: (val) => bloc.add(NameChanged(name: val)),
-                    ),
-                    if (state.nameError != null)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 4),
-                        child: Text(
-                          state.nameError!,
-                          style: const TextStyle(
-                            color: Colors.red,
-                            fontSize: 12,
+                    Form(
+                      key: bloc.formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Username
+                          CustomTextField(
+                            controller: bloc.nameController,
+                            hintText: "Display Name",
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter display name';
+                              }
+                              return null;
+                            },
+                            icon: Icons.person_outline,
                           ),
-                        ),
-                      ),
-                    AppSpacing.h16,
-
-                    // Email
-                    CustomTextField(
-                      hintText: 'Email Address',
-                      icon: Icons.email_outlined,
-                      onChanged: (val) => bloc.add(EmailChanged(email: val)),
-                    ),
-                    if (state.emailError != null)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 4),
-                        child: Text(
-                          state.emailError!,
-                          style: const TextStyle(
-                            color: Colors.red,
-                            fontSize: 12,
+                          AppSpacing.h16,
+                          // Email
+                          CustomTextField(
+                            controller: bloc.emailController,
+                            hintText: 'Email Address',
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your email';
+                              }
+                              final emailRegex = RegExp(
+                                r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+                              );
+                              if (!emailRegex.hasMatch(value)) {
+                                return 'Please enter a valid email';
+                              }
+                              return null;
+                            },
+                            icon: Icons.email_outlined,
                           ),
-                        ),
-                      ),
-                    AppSpacing.h16,
 
-                    // Password
-                    CustomTextField(
-                      hintText: 'Password',
-                      icon: Icons.lock_outline,
-                      obscureText: state.showPassword,
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          state.showPassword
-                              ? Icons.visibility_off
-                              : Icons.visibility,
-                          color: Colors.grey,
-                        ),
-                        onPressed: () => context.read<SignupBloc>().add(
-                          TogglePasswordVisibility(),
-                        ),
-                      ),
-                      onChanged: (val) =>
-                          bloc.add(PasswordChanged(password: val)),
-                    ),
-                    if (state.passwordError != null)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 4),
-                        child: Text(
-                          state.passwordError!,
-                          style: const TextStyle(
-                            color: Colors.red,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ),
-                    AppSpacing.h16,
+                          AppSpacing.h16,
 
-                    // Confirm Password
-                    CustomTextField(
-                      hintText: 'Confirm Password',
-                      icon: Icons.lock_outline,
-                      obscureText: state.showConfirmPassword,
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          state.showConfirmPassword
-                              ? Icons.visibility_off
-                              : Icons.visibility,
-                          color: Colors.grey,
-                        ),
-                        onPressed: () => context.read<SignupBloc>().add(
-                          ToggleConfirmPasswordVisibility(),
-                        ),
-                      ),
-                      onChanged: (val) => bloc.add(
-                        ConfirmPasswordChanged(confirmPassword: val),
-                      ),
-                    ),
-                    if (state.confirmPasswordError != null)
-                      Text(
-                        state.confirmPasswordError!,
-                        style: TextStyle(color: Colors.red, fontSize: 12),
-                      ),
-                    AppSpacing.h24,
-                    Text("Already have an account?"),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => LoginScreen(),
-                          ),
-                        );
-                      },
-                      child: Text(
-                        'Login here',
-                        style: TextStyle(color: AppColors.orange),
-                      ),
-                    ),
-                    AppSpacing.h80,
-                    // Button
-                    CustomButton(
-                      text: 'SIGN UP',
-                      onPressed: () {
-                        if (state.nameError == null &&
-                            state.emailError == null &&
-                            state.passwordError == null &&
-                            state.confirmPasswordError == null &&
-                            state.name.isNotEmpty &&
-                            state.email.isNotEmpty &&
-                            state.password.isNotEmpty &&
-                            state.confirmPassword.isNotEmpty) {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const BottomNavbarScreen(),
+                          // Password
+                          CustomTextField(
+                            controller: bloc.passwordController,
+
+                            hintText: 'Password',
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter password';
+                              }
+                              if (value.length < 6) {
+                                return 'Password must be at least 6 characters';
+                              }
+                              return null;
+                            },
+                            icon: Icons.lock_outline,
+                            obscureText: bloc.isPasswordHidden,
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                bloc.isPasswordHidden
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                                color: Colors.grey,
+                              ),
+                              onPressed: () =>
+                                  bloc.add(TogglePasswordVisibility()),
                             ),
-                          );
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text("Please fix the errors"),
+                          ),
+                          AppSpacing.h16,
+
+                          // Confirm Password
+                          CustomTextField(
+                            hintText: 'Confirm Password',
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please confirm password';
+                              }
+                              if (value != bloc.passwordController.text) {
+                                return 'Passwords do not match';
+                              }
+                              return null;
+                            },
+                            icon: Icons.lock_outline,
+                            obscureText: bloc.isConfirmPasswordHidden,
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                bloc.isConfirmPasswordHidden
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                                color: Colors.grey,
+                              ),
+                              onPressed: () =>
+                                  bloc.add(ToggleConfirmPasswordVisibility()),
                             ),
-                          );
-                        }
-                      },
-                      textColor: Colors.white,
+                          ),
+                          AppSpacing.h24,
+                          Text("Already have an account?"),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => LoginScreen(),
+                                ),
+                              );
+                            },
+                            child: Text(
+                              'Login here',
+                              style: TextStyle(color: AppColors.orange),
+                            ),
+                          ),
+                          AppSpacing.h80,
+                          // Button
+                          CustomButton(
+                            text: 'SIGN UP',
+                            onPressed: () {
+                              if (bloc.formKey.currentState!.validate()) {
+                                bloc.add(SignUpEvent());
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const BottomNavbarScreen(),
+                                  ),
+                                );
+                              }
+                            },
+                            textColor: Colors.white,
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 );

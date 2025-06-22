@@ -1,63 +1,46 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
-import 'package:geonotes/screens/signup/bloc/signup_state.dart';
+import 'package:flutter/material.dart';
+import 'package:geonotes/layer_data/auth_layer.dart';
+import 'package:get_it/get_it.dart';
 import 'package:meta/meta.dart';
 
 part 'signup_event.dart';
+part 'signup_state.dart';
 
 class SignupBloc extends Bloc<SignupEvent, SignupState> {
-  SignupBloc() : super(const SignupState()) {
-    on<NameChanged>((event, emit) {
-      final isValid = RegExp(r'^[A-Z][a-zA-Z0-9]{5,}$').hasMatch(event.name);
-      emit(
-        state.copyWith(
-          name: event.name,
-          nameError: isValid ? null : 'Must start with capital & be 6+ chars',
-        ),
-      );
-    });
+  final formKey = GlobalKey<FormState>();
+  bool isPasswordHidden = true;
+  bool isConfirmPasswordHidden = true;
 
-    on<EmailChanged>((event, emit) {
-      final isValid = RegExp(
-        r'^[\w-\.]+@([\w-]+\.)+[\w]{2,4}$',
-      ).hasMatch(event.email);
-      emit(
-        state.copyWith(
-          email: event.email,
-          emailError: isValid ? null : 'Invalid email format',
-        ),
-      );
-    });
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
+  final authGetit = GetIt.I.get<AuthLayer>();
 
-    on<PasswordChanged>((event, emit) {
-      final isValid = event.password.length >= 6;
-      emit(
-        state.copyWith(
-          password: event.password,
-          passwordError: isValid ? null : 'Password must be 6+ characters',
-          confirmPasswordError: state.confirmPassword != event.password
-              ? 'Passwords do not match'
-              : null,
-        ),
-      );
-    });
-
-    on<ConfirmPasswordChanged>((event, emit) {
-      emit(
-        state.copyWith(
-          confirmPassword: event.confirmPassword,
-          confirmPasswordError: event.confirmPassword != state.password
-              ? 'Passwords do not match'
-              : null,
-        ),
-      );
-    });
-
+  SignupBloc() : super(SignupInitial()) {
+    on<SignUpEvent>(signupMethod);
     on<TogglePasswordVisibility>((event, emit) {
-      emit(state.copyWith(showPassword: !state.showPassword));
+      isPasswordHidden = !isPasswordHidden;
+      emit(PasswordVisibilityState());
     });
 
     on<ToggleConfirmPasswordVisibility>((event, emit) {
-      emit(state.copyWith(showConfirmPassword: !state.showConfirmPassword));
+      isConfirmPasswordHidden = !isConfirmPasswordHidden;
+      emit(ConfirmPasswordVisibilityState());
     });
+  }
+  FutureOr<void> signupMethod(
+    SignUpEvent event,
+    Emitter<SignupState> emit,
+  ) async {
+    await authGetit.signUpMethod(
+      name: nameController.text,
+      email: emailController.text,
+      password: passwordController.text,
+    );
+    emit(SignupSuccess());
   }
 }

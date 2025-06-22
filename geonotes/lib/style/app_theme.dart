@@ -5,7 +5,6 @@ final ThemeData lightTheme = ThemeData(
   scaffoldBackgroundColor: Colors.white,
 
   appBarTheme: AppBarTheme(
-    // backgroundColor: AppColors.basckground,
     backgroundColor: Colors.white,
     titleTextStyle: TextStyle(
       color: Colors.black,

@@ -8,6 +8,7 @@ class CustomTextField extends StatelessWidget {
   final Function(String)? onChanged;
   final Widget? suffixIcon;
   final TextEditingController? controller;
+  final String? Function(String?)? validator;
 
   const CustomTextField({
     super.key,
@@ -15,16 +16,21 @@ class CustomTextField extends StatelessWidget {
     required this.icon,
     this.obscureText = false,
     this.onChanged,
+
     this.suffixIcon,
     this.controller,
+    this.validator,
   });
+
+  // A reusable styled text field widget with customizable icon, hint, validation, and optional password obscuring.
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
       obscureText: obscureText,
       controller: controller,
       onChanged: onChanged,
+      validator: validator,
       decoration: InputDecoration(
         hintText: hintText,
         prefixIcon: Icon(icon, color: AppColors.orange),

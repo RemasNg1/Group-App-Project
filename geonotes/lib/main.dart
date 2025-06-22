@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:geonotes/screens/bottom_navbar/bottom_navbar_screen.dart';
+import 'package:geonotes/repository/supabase.dart';
 import 'package:geonotes/screens/splash/splash_screen.dart';
+import 'package:geonotes/services/setup.dart';
 import 'package:geonotes/style/app_theme.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await SupabaseConnect.init();
+  setup();
   runApp(const MyApp());
 }
 

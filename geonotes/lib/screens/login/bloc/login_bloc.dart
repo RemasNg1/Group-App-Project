@@ -1,35 +1,41 @@
-import 'package:bloc/bloc.dart';
+import 'dart:async';
 
-import 'login_state.dart';
+import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
+import 'package:geonotes/layer_data/auth_layer.dart';
+import 'package:get_it/get_it.dart';
+import 'package:meta/meta.dart';
 
 part 'login_event.dart';
+part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  LoginBloc() : super(const LoginState()) {
-    on<EmailChanged>((event, emit) {
-      final isValid = RegExp(
-        r'^[\w-\.]+@([\w-]+\.)+[\w]{2,4}$',
-      ).hasMatch(event.email);
-      emit(
-        state.copyWith(
-          email: event.email,
-          emailError: isValid ? null : 'Invalid email format',
-        ),
-      );
-    });
-
-    on<PasswordChanged>((event, emit) {
-      final isValid = event.password.length >= 6;
-      emit(
-        state.copyWith(
-          password: event.password,
-          passwordError: isValid ? null : 'Password must be 6+ characters',
-        ),
-      );
-    });
+  final authGetit = GetIt.I.get<AuthLayer>();
+  final formKey = GlobalKey<FormState>();
+  bool isPasswordHidden = true;
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  LoginBloc() : super(LoginInitial()) {
+    on<LoginButtonPressed>(signinMethod);
 
     on<TogglePasswordVisibility>((event, emit) {
-      emit(state.copyWith(showPassword: !state.showPassword));
+      isPasswordHidden = !isPasswordHidden;
+      emit(PasswordVisibilityState());
     });
+  }
+
+  FutureOr<void> signinMethod(
+    LoginButtonPressed event,
+    Emitter<LoginState> emit,
+  ) async {
+    try {
+      await authGetit.signInMethod(
+        email: emailController.text,
+        password: passwordController.text,
+      );
+      emit(LoginSuccess());
+    } catch (e) {
+      emit(LoginFailure("Wrong email or password. Please try again."));
+    }
   }
 }

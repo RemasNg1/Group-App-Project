@@ -20,6 +20,8 @@ class CustomListTile extends StatelessWidget {
     this.contentPadding = EdgeInsets.zero,
   });
 
+  // A customizable ListTile widget with leading icon, title, optional trailing widget, and tap handling on the trailing area.
+
   @override
   Widget build(BuildContext context) {
     return ListTile(

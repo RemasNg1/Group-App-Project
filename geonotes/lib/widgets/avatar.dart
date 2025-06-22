@@ -6,6 +6,8 @@ class Avatar extends StatelessWidget {
 
   const Avatar({super.key, required this.imagePath});
 
+  // A widget that displays a rounded rectangular avatar image with responsive width and height based on screen size.
+
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
