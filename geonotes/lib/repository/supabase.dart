@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:geonotes/models/response/note_response_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SupabaseConnect {
@@ -83,5 +84,48 @@ class SupabaseConnect {
     } catch (e) {
       print("Error during logout: $e");
     }
+  }
+
+  static Future<List<NoteResponse>> getUserNote({
+    required String authId,
+  }) async {
+    // toDo : get note by Id
+    final result = await supabase?.client
+        .from("notes")
+        .select()
+        .eq('authid', authId);
+    ;
+    List<NoteResponse> myNote = List.from(
+      result ?? [],
+    ).map((item) => NoteResponse.fromJson(item)).toList();
+    print(myNote[0].title);
+
+    return myNote;
+  }
+
+  static createNewNote({required NoteResponse note}) async {
+    final result = await supabase?.client
+        .from("notes")
+        .insert(note.toJson())
+        .select();
+    print(result);
+  }
+
+  static editNote({required NoteResponse note}) async {
+    final result = await supabase?.client
+        .from("notes")
+        .update(note.toJson())
+        .eq('authid', note.authid!)
+        .eq('id', note.id!);
+    print(result);
+  }
+
+  static deleteNote({required NoteResponse note}) async {
+    final result = await supabase?.client
+        .from("notes")
+        .delete()
+        .eq('authid', note.authid!)
+        .eq('id', note.id!);
+    print("delete");
   }
 }
