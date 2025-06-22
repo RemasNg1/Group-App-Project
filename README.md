@@ -1,63 +1,85 @@
-# 📱 Group App Development Project
+# Geonotes 📍📝
+**Geonotes** is a location-based notes application, Geonotes lets you create notes and attach them to specific geographic locations.  
+Once you add a note, you'll receive a confirmation notification letting you know it was successfully added.
 
-welcome to the Group App Development Project!  
-This assignment challenges your team to collaborate on designing and developing a fully functional app that incorporates core features and essential concepts. You will apply what you've learned in class to create an application that includes the following functionalities:
+
+
+---
+
+## 🔍 Project Preview
+
+
+[🎥 Watch Project Preview on Google Drive Part 1](https://drive.google.com/file/d/1PDzL57kFcSi3feW45kJ-Op0Z_5QliW4K/view?usp=sharing)
+[🎥 Watch Project Preview on Google Drive Part 2](https://drive.google.com/file/d/1GdGJ5ZLQ6KpUVVyKdu0CUIyYuC3Lipfs/view?usp=sharing)
+
 
 ---
 
 ## 🎯 Core Functionality
 
-- **Log in 22222**
-- **Sign Up**
-- **CRUD Operations:**
-  - **Create** – Add new items to your app.
-  - **Read** – Retrieve and display data.
-  - **Update** – Edit existing items.
-  - **Delete** – Remove items from your app.
+- **Authentication**
+  - **Sign Up** – Create a new account.
+  - **Log In** – Access your existing account.
+
+- **Notes Management (CRUD)**
+  - **Create** – Add new location-based notes.
+  - **Read** – View and browse your saved notes.
+  - **Update** – Edit existing notes.
+  - **Delete** – Remove notes you no longer need.
+
+- **Profile Management**
+  - **Edit Profile Info** – Update your personal details.
+
 
 ---
 
-## 🔧 Concepts to Implement
+## 📦 Packages Used
 
-- **GetIt** – For dependency injection.
-- **BLoC** – Use BLoC for state management.
-- **Notifications**
-- **Google Map Integration**
-- **Supabase** – Backend services.
-
----
-
-## 🌟 UI Requirements
-
-- Your app must include at least **10 user interfaces (UIs).**
+- **get_it**  
+- **flutter_bloc**  
+- **google_maps_flutter**  
+- **flutter_dotenv**  
+- **onesignal_flutter**  
+- **supabase_flutter**  
 
 ---
 
-## 📅 Deadline
+## ⚙️ Tech Stack
+- **Flutter**
+- **Dart**
+- **Supabase**
+- **OneSignal**
+- **Google Maps Flutter**
 
-- **Submission deadline:** June 22, 9:59 AM.
-- Each team must submit one pull request by the team lead, including the team name.
+---
+## 💻  Setup instructions 
+
+ 1. Clone the repository:
+
+```
+https://github.com/RemasNg1/Group-App-Project.git
+```
+2. Navigate to the project folder:
+
+```
+cd Group-App-Project\geonotes
+```
+
+3. Install dependencies:
+```
+flutter pub get
+```
+
+ 4. Run the app:
+ ```
+ flutter run 
+ ```  
 
 ---
 
-## 💻 GitHub Submission Guidelines
+## 🚀👥 Team Members
 
-- Ensure your pull request includes a well-structured `README.md` file.
-- The README should include:
-  - Description of the project.
-  - Setup instructions.
-  - Team members.
-  - Explanation of the key functionalities implemented.
-  - Screenshots of your app.
-
----
-
-## 🌟 Final Motivation
-
-> **Remember: Teamwork makes the dream work!**
->
-> Stay focused, collaborate effectively, and give it your best shot.  
-> Together, you can create something amazing! 🚀
-
----
+- **Remas Alnugaithan - Team Leader**
+- **Manal Almarri**
+- **Omar Alsulami**
 
